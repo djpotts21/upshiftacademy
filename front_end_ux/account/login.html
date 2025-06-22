@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Login{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="row">
+    <div class="col-0 col-md-4"></div>
+    <div class="col-12 col-md-4">
+        <div class="form-container">
+            <h4 class="text-center mb-2">Login</h4>
+            <p class="text-center mb-1">Please enter your credentials to sign in.</p>
+            <form method="POST" action="{% url 'account_login' %}">
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div class="form-group">
+                    {{ form.login.label_tag }}
+                    {{ form.login }}
+                    {{ form.login.errors }}
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    {{ form.password.label_tag }}
+                    <div class="input-group">
+                        {{ form.password }}
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                                style="line-height: 30px;">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{ form.password.errors }}
+                </div>
+                {{ form.password.errors }}
+        </div>
+
+        <!-- Remember Me -->
+        {% if form.remember %}
+        <div class="form-group my-2">
+            {{ form.remember.label_tag }}
+            {{ form.remember }}
+        </div>
+        {% endif %}
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-lg btn-dark w-100">Sign In</button>
+        </form>
+
+        <!-- Manual Forgot Password link outside the form -->
+        <div class="d-flex justify-content-between mt-2">
+            <a href="{% url 'account_reset_password' %}" class="btn btn-outline-dark w-50 me-1">Forgot Password?</a>
+            <a href="{% url 'account_signup' %}" class="btn btn-outline-dark w-50 ms-1">Create an Account</a>
+        </div>
+
+    </div>
+    <div class="col-0 col-md-4"></div>
+</div>
+
+
+{% endblock %}
+
+<!-- Page Spefici Scripts -->
+{% block scripts %}
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock %}
+
+<!-- Page Specific Styles -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}

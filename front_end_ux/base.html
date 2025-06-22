@@ -1,0 +1,133 @@
+{% load static %}
+{% load bootstrap_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpShift Academy | {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/custom-bootstrap.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    {% block styles %}{% endblock %}
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Top Bar -->
+    <div class="top-bar bg-dark text-white py-2">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-phone-alt"></i>
+                <span class="ms-2">+1 234 567 890</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-envelope"></i>
+                <a href="#" class="text-white ms-2 text-decoration-none">EMAIL US</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Branding + Search (desktop only) -->
+    <div class="container bg-white py-2 border-bottom d-none d-lg-block">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    UpShift Academy <span class="badge bg-secondary">v1.0</span>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <form class="d-flex justify-content-end" action="#" method="get">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Navbar -->
+    <header id="main-navbar" class="scroll-navbar bg-white py-2 sticky-top">
+        <div class="container px-3">
+            <nav class="navbar navbar-expand-lg px-0">
+                <!-- Mobile Branding and Toggler -->
+                <div class="d-flex d-lg-none justify-content-between align-items-center w-100">
+                    <a class="navbar-brand mb-0" href="{% url 'home' %}">UpShift Academy <span
+                            class="badge bg-secondary">v1.0</span></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <!-- Scroll Logo -->
+                <a href="{% url 'home' %}" id="scroll-logo" class="navbar-brand scroll-logo d-none">
+                    UpShift Academy <span class="badge bg-secondary">v1.0</span>
+                </a>
+
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center w-100">
+                        <li class="nav-item"><a class="nav-link p-0" href="{% url 'home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link p-0" href="#">About</a></li>
+                        <li class="nav-item"><a class="nav-link p-0" href="#">Services</a></li>
+                        <li class="nav-item"><a class="nav-link p-0" href="#">Contact</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item d-flex flex-column flex-lg-row">
+                            <a class="nav-link p-0" href="{% url 'account_logout' %}"><i
+                                    class="fa-solid fa-right-to-bracket"></i> Logout</a>
+                            <a class="nav-link p-0 ms-lg-3" href="{% url 'profile' %}"><i class="fa-solid fa-user"></i>
+                                Profile</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item d-flex flex-column flex-lg-row">
+                            <a class="nav-link p-0" href="{% url 'account_login' %}"><i
+                                    class="fa-solid fa-right-to-bracket"></i> Login</a>
+                            <a class="nav-link p-0 ms-lg-3" href="{% url 'account_signup' %}"> Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Messages -->
+    <div class="container-fluid d-flex justify-content-end">
+        {% if messages %}
+        <div id="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags|bootstrap_alert_class }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-container mt-1 mt-md-4">
+        <div class="container-fluid g-0 py-lg-2 p-3 p-md-0">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container-fluid text-center">
+            <p>&copy; 2023 UpShift Academy. All rights reserved.</p>
+            <p>Follow us on:
+                <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/base.js' %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

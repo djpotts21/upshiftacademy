@@ -1,0 +1,14 @@
+.form-container {
+    display: inline-grid;
+    row-gap: 10px;
+    width: 100%;
+    box-shadow: 0px 0px 25px -4px rgba(0, 0, 0, 0.30);
+    -webkit-box-shadow: 0px 0px 25px -4px rgba(0, 0, 0, 0.30);
+    -moz-box-shadow: 0px 0px 25px -4px rgba(0, 0, 0, 0.30);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-container input {
+    line-height: 30px !important;
+}

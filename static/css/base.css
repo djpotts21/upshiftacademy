@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+html,
+body {
+    max-width: 100%;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    scroll-behavior: smooth;
+}
+
+.form-control:focus {
+    background-color: var(--bs-body-bg);
+    border-color: rgba(var(--bs-dark-rgb));
+    outline: 0;
+    box-shadow: none !important;
+}
+
+/* Sticky Navbar */
+#main-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1055;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Scroll Logo: default hidden */
+.scroll-logo {
+    display: none;
+    transform: scale(1.2);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Scroll Logo on large screens (desktop only) */
+@media (min-width: 1024px) {
+    #main-navbar.show-logo .scroll-logo {
+        display: block !important;
+        opacity: 1;
+        transform: scale(0.85);
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    .navbar-toggler {
+        border: none;
+    }
+
+    .top-bar {
+        display: none !important;
+    }
+
+    .scroll-logo {
+        display: none !important;
+    }
+
+    .navbar-brand {
+        font-size: 1.25rem;
+        padding: 0.5rem 1rem;
+    }
+}

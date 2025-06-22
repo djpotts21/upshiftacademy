@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Confirm Email{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<!-- Bootstrap Profile New -->
+<div class="row">
+    <div class="col-0 col-md-4"></div>
+    <div class="col-12 col-md-4">
+        <h2 class="mb-3">Confirm Your Email</h2>
+
+        {% if confirmation %}
+        <p class="lead">
+            Please confirm that <strong>{{ confirmation.email_address.email }}</strong>
+            is your email address.
+        </p>
+
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-check"></i> Confirm Email
+            </button>
+        </form>
+        {% else %}
+        <div class="alert alert-danger mt-3">
+            This confirmation link is invalid or has already been used.
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-0 col-md-4"></div>
+</div>
+{% endblock %}
+
+<!-- Page Spefici Scripts -->
+{% block scripts %}
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}
+
+<!-- Page Specific Styles -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}

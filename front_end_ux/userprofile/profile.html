@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Profile{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<!-- Bootstrap Profile New -->
+<div class="container mt-4">
+    <div class="row">
+        <h2 class="mb-3">Profile for @{{ user.username }}</h2>
+        <div class="col-12 col-lg-4 mb-4">
+            <div class="row">
+                <img alt="Identicon for {{ user.username }}" class="img-fluid" src="https://api.dicebear.com/9.x/identicon/svg?seed={{ user.username }}" style="object-fit: contain;" />
+            </div>
+            <div class="row mt-4 p-2">
+                <p class="alert alert-dark no-auto-dismiss">This is your Identicon, a unique avatar generated based on your username. If you want a new one, just change your username.</p>
+                <button class="btn btn-dark mt-1 w-100 w-md-50 mx-auto" data-bs-target="#changepassword" data-bs-toggle="modal">
+                    <i class="fa-solid fa-key"></i> Change Password
+                </button>
+                <a class="btn btn-dark mt-1 w-100 w-md-50 mx-auto" href="{% url 'public_profile' user.id %}">
+                    <i class="fa-solid fa-eye"></i> View your Public Profile
+                </a>
+            </div>
+            <!-- changepassword modal -->
+            <div aria-hidden="true" aria-labelledby="changepasswordLabel" class="modal fade" id="changepassword" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0">
+                        <div class="modal-header bg-dark text-white">
+                            <h5 class="modal-title" id="changepasswordLabel">Change Password</h5>
+                            <button aria-label="Close" class="btn-close btn-close-white" data-bs-dismiss="modal" type="button"></button>
+                        </div>
+                        <form action="{% url 'update_password' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label" for="current_password">Current Password</label>
+                                    <input class="form-control" id="current_password" name="current_password" required="" type="password" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="new_password">New Password</label>
+                                    <input class="form-control" id="new_password" name="new_password" required="" type="password" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="confirm_password">Confirm New Password</label>
+                                    <input class="form-control" id="confirm_password" name="confirm_password" required="" type="password" />
+                                </div>
+                            </div>
+                            <div class="modal-footer bg-light">
+                                <button class="btn btn-success" type="submit">Change Password</button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Password Change Modal -->
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <h2>Profile Information</h2>
+            <form action="{% url 'update_profile' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="first_name">User Name</label>
+                    <input class="form-control" id="username" name="username" type="text" value="{{ user.username }}" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="first_name">First Name</label>
+                    <input class="form-control" id="first_name" name="first_name" type="text" value="{{ user.first_name }}" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="last_name">Last Name</label>
+                    <input class="form-control" id="last_name" name="last_name" type="text" value="{{ user.last_name }}" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email">Email</label>
+                    <input class="form-control" id="email" name="email" type="email" value="{{ user.email }}" />
+                    <!-- alert bar to say "Not displayed on your public profile, and we don't share it with anyone" -->
+                    <div class="alert alert-info mt-2 no-auto-dismiss">
+                        Your email is not displayed on your public profile and we never sell your email!
+                    </div>
+                </div>
+                <div class="form-group position-relative mb-3">
+                    <label for="location">Location</label>
+                    <input autocomplete="off" class="form-control" id="location" name="location" type="text" value="{{ profile.location }}" />
+                    <ul class="list-group position-absolute w-100" id="location-results" style="z-index: 1000;"></ul>
+                </div>
+                <!-- Date of Birth with Date Picker -->
+                <div class="form-group mb-3">
+                    <label for="date_of_birth">Date of Birth</label>
+                    <input class="form-control" id="date_of_birth" name="date_of_birth" type="date" value="{{ profile.date_of_birth|date:'Y-m-d' }}" required />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="bio">Bio</label>
+                    <textarea class="form-control" id="bio" name="bio" rows="10">{{ profile.bio }}</textarea>
+                </div>
+                <button class="btn btn-dark mt-3 w-100" type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+
+    <!-- Page Spefici Scripts -->
+    {% block scripts %}
+    <script src="{% static 'js/profile.js' %}"></script>
+    {% endblock %}
+
+    <!-- Page Specific Styles -->
+    {% block styles %}
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet" />
+    {% endblock %}
+</div>

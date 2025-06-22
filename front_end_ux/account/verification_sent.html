@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Verify Email{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="row">
+    <div class="col-0 col-md-4"></div>
+    <div class="col-12 col-md-4">
+        <div class="form-container">
+            <h4 class="text-center mb-2">Verify Your Email Address</h4>
+            <p class="text-center mb-1">A verification link has been sent to your email. Please check your inbox and click the link to confirm your email address.</p>
+            
+
+            <!-- Manual Forgot Password link outside the form -->
+            <a href="{% url 'account_login' %}" class="btn btn-dark w-100 mt-2">Back to Login</a>
+
+        </div>
+    </div>
+    <div class="col-0 col-md-4"></div>
+</div>
+
+
+{% endblock %}
+
+<!-- Page Spefici Scripts -->
+{% block scripts %}
+{% endblock %}
+
+<!-- Page Specific Styles -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}

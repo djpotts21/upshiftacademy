@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Signup{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="row">
+    <div class="col-0 col-md-4"></div>
+    <div class="col-12 col-md-4">
+        <div class="form-container">
+            <h4 class="text-center mb-2">Create an Account</h4>
+            <p class="text-center mb-1">Please fill in the form to create your account.</p>
+            <form method="POST" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                <div class="form-group mt-0 mb-3">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+                <div class="form-group mt-0 mb-3">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+                <div class="form-group mt-0 mb-3">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                </div>
+                <div class="form-group mt-0 mb-3">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-lg btn-dark w-100">Sign Up</button>
+            </form>
+
+            <!-- Manual Forgot Password link outside the form -->
+            <a href="{% url 'account_login' %}" class="btn btn-outline-dark w-100 mt-2">Already have an account?</a>
+
+        </div>
+    </div>
+    <div class="col-0 col-md-4"></div>
+</div>
+
+
+{% endblock %}
+
+<!-- Page Spefici Scripts -->
+{% block scripts %}
+{% endblock %}
+
+<!-- Page Specific Styles -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
