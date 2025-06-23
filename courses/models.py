@@ -12,7 +12,7 @@ User = get_user_model()
 
 class Module(models.Model):
     """Model representing a course module."""
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=250)
     content = models.TextField()
     image = models.ImageField(upload_to='modules/', blank=True, null=True)
     video = models.FileField(upload_to='modules/videos/', blank=True, null=True)

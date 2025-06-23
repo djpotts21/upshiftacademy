@@ -186,17 +186,11 @@ def public_profile(request, userid):
         months = (delta.days % 365) // 30
         days = (delta.days % 365) % 30
         if years > 0:
-            since_joined = f"{years} year{
-                's' if years > 1 else ''} {
-                    months} month{'s' if months > 1 else ''} {
-                        days} day{'s' if days > 1 else ''} ago"
+            since_joined = f"{years} year{'s' if years > 1 else ''} {months} month{'s' if months > 1 else ''} {days} day{'s' if days > 1 else ''} ago"
         elif months > 0:
-            since_joined = f"{
-                months} month{'s' if months > 1 else ''} {
-                    days} day{'s' if days > 1 else ''} ago"
+            since_joined = f"{months} month{'s' if months > 1 else ''} {days} day{'s' if days > 1 else ''} ago"
         else:
-            since_joined = f"{
-                days} day{'s' if days > 1 else ''} ago"
+            since_joined = f"{days} day{'s' if days > 1 else ''} ago"
     else:
         since_joined = ""
 
@@ -214,10 +208,14 @@ def public_profile(request, userid):
     else:
         country = "Country not specified"
 
+    # Get a time-limited S3 link for the profile picture
+    if profile.profile_picture:
+        profile_picture_url = profile.profile_picture.url
+    else:
+        profile_picture_url = None
+    
     profile_data = {
-        'profile_picture': (
-            profile.profile_picture.url if profile.profile_picture else None
-        ),
+        'profile_picture': profile_picture_url,
         'bio': profile.bio,
         'age': age,
         'since_joined': since_joined,

@@ -1,6 +1,6 @@
 {
   "terminal.integrated.cwd": "C:\\Users\\djpot\\OneDrive\\_Projects\\upshiftacademy\\",
-  "python.defaultInterpreterPath": "C:\\Users\\djpot\\OneDrive\\_Projects\\upshiftacademy\\.venv\\Scripts\\python.exe",
+  "python.defaultInterpreterPath": "C:\\Python313\\python.exe",
   "terminal.integrated.profiles.windows": {
     "PowerShell + .venv": {
       "source": "PowerShell",
