@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Challange{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+
+<div class="container mt-3">
+    <h2>{{ challenge.title }}</h2>
+    <div id="result" class="mt-3"></div>
+    <pre id="output" class="bg-light p-2"></pre>
+    <pre id="error" class="bg-light text-danger p-2"></pre>
+    <div class="instructions">
+        <h4>Instructions:</h4>
+        <p style="white-space: pre-wrap;">{{ challenge.instructions }}</p>
+    </div>
+    <form id="code-form" method="post">
+        {% csrf_token %}
+
+        <!-- Monaco Editor UI -->
+        <div id="editor" style="height: 400px; border: 1px solid #ccc;"></div>
+
+        <!-- Hidden textarea that gets filled on submit -->
+        <textarea name="code" id="id_code" hidden></textarea>
+
+        <button type="submit" class="btn btn-primary mt-3">Run Code</button>
+    </form>
+</div>
+{% endblock %}
+
+<!-- Page Spefici Scripts -->
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' } });
+            require(['vs/editor/editor.main'], function () {
+                const editor = monaco.editor.create(document.getElementById('editor'), {
+                    value: `#UpShift Code Challenge {{ challenge.id }}\n\n{{ challenge.starter_code|escapejs }}`,
+                    language: 'python',
+                    theme: 'vs-dark',
+                });
+
+                const form = document.getElementById('code-form');
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const code = editor.getValue();
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    fetch("{% url 'run_code_ajax' challenge.id %}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken,
+                            "X-Requested-With": "XMLHttpRequest",
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: new URLSearchParams({ code })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            document.querySelector('#result').innerHTML = `<strong>${data.result}</strong>`;
+                            document.querySelector('#output').textContent = data.output || "";
+                            document.querySelector('#error').textContent = data.user_friendly_error || "";
+                        })
+                        .catch(err => console.error("Error submitting code:", err));
+                });
+            });
+        });
+    });
+</script>
+
+{% endblock %}
+
+<!-- Page Specific Styles -->
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/challange.css' %}">
+{% endblock %}
