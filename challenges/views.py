@@ -16,9 +16,9 @@ def parse_python_error(stderr):
     if "NameError" in stderr:
         parts = stderr.strip().split(":")
         if len(parts) >= 2:
-            return f"❌ Error: {parts[-1].strip()}\n💡 Tip: Check if the function or variable is defined."
+            return f"❌ Error: {parts[-1].strip()}\n\n💡 Tip: Check if the function or variable is defined."
         return "❌ NameError: Check for missing function or variable definitions."
-
+    
     if "SyntaxError" in stderr:
         return "❌ Syntax Error: Please check your code formatting and punctuation."
 
@@ -27,8 +27,36 @@ def parse_python_error(stderr):
 
     if "TypeError" in stderr:
         return f"❌ {stderr.strip().splitlines()[-1]}"
-
+ 
     return stderr.strip() or ""
+
+
+def parse_python_output(output):
+    """Parse Python output to provide user-friendly feedback."""
+    if not output:
+        return "❌ No output generated."
+
+    lines = output.strip().splitlines()
+    if len(lines) == 1:
+        return lines[0].strip()
+
+    return "\n".join(line.strip() for line in lines if line.strip())
+
+
+def parse_python_result(result):
+    """Parse the result from Judge0 to determine if the code passed."""
+    if not result:
+        return "No result available."
+    if "Accepted" in result:
+        return "✅ Accepted"
+    elif "Wrong Answer" in result:
+        return "❌ Wrong Answer"
+    elif "Time Limit Exceeded" in result:
+        return "⏳ Time Limit Exceeded"
+    elif "Runtime Error" in result:
+        return "❌ Runtime Error"
+    else:
+        return f"❓ {result}"
 
 
 def run_code_challenge(request, challenge_id):
@@ -48,7 +76,7 @@ def run_code_challenge(request, challenge_id):
             raw_error = judge_result.get("stderr") or ""
             user_friendly_error = parse_python_error(raw_error)
 
-            output = judge_result.get("stdout", "")
+            output = parse_python_output(judge_result.get("stdout", ""))
             error = judge_result.get("stderr", "")
             status = judge_result.get(
                 "status", {}).get("description", "Unknown")
@@ -101,9 +129,10 @@ def run_code_ajax(request, challenge_id):
             traceback.print_exc()  # Logs to console
             return JsonResponse({"error": f"Code execution failed: {str(e)}"}, status=500)
 
-        output = judge_result.get("stdout") or ""
+        output = parse_python_output(judge_result.get("stdout", ""))
         error = judge_result.get("stderr") or ""
         status = judge_result.get("status", {}).get("description", "Unknown")
+        result = parse_python_result(status)
         user_friendly_error = user_friendly_error
 
         passed = "accepted" in status.lower() and (
@@ -123,7 +152,7 @@ def run_code_ajax(request, challenge_id):
             )
 
         return JsonResponse({
-            "result": status,
+            "result": result,
             "output": output,
             "error": error,
             "passed": passed,

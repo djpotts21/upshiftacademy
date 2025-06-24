@@ -9,24 +9,31 @@
 
 <div class="container mt-3">
     <h2>{{ challenge.title }}</h2>
-    <div id="result" class="mt-3"></div>
-    <pre id="output" class="bg-light p-2"></pre>
-    <pre id="error" class="bg-light text-danger p-2"></pre>
-    <div class="instructions">
-        <h4>Instructions:</h4>
-        <p style="white-space: pre-wrap;">{{ challenge.instructions }}</p>
+
+    <div class="row">
+        <div class="col-8">
+            <form id="code-form" method="post">
+                {% csrf_token %}
+
+                <!-- Monaco Editor UI -->
+                <div id="editor" style="height: 400px; border: 1px solid #ccc;"></div>
+
+                <!-- Hidden textarea that gets filled on submit -->
+                <textarea name="code" id="id_code" hidden></textarea>
+
+                <button type="submit" class="btn btn-primary mt-3">Run Code</button>
+            </form>
+        </div>
+        <div class="col-4">
+            <h4>Instructions:</h4>
+            <p style="white-space: pre-wrap;">{{ challenge.instructions }}</p>
+            <div id="response-card" class="card shadow d-none p-1">
+                <div id="result" class="bg-light p-2"></div>
+                <div id="output" class="bg-light p-2"></div>
+                <div id="error" class="bg-light text-danger p-2" style="white-space: break-spaces;"></div>
+            </div>
+        </div>
     </div>
-    <form id="code-form" method="post">
-        {% csrf_token %}
-
-        <!-- Monaco Editor UI -->
-        <div id="editor" style="height: 400px; border: 1px solid #ccc;"></div>
-
-        <!-- Hidden textarea that gets filled on submit -->
-        <textarea name="code" id="id_code" hidden></textarea>
-
-        <button type="submit" class="btn btn-primary mt-3">Run Code</button>
-    </form>
 </div>
 {% endblock %}
 
@@ -62,10 +69,16 @@
                         body: new URLSearchParams({ code })
                     })
                         .then(res => res.json())
+                        .then(
+                            document.querySelector('#response-card').classList.remove('d-none'),
+                            document.querySelector('#response-card').innerHTML = "<strong>Running...</strong>",
+                        )
+                        .then(() => new Promise(resolve => setTimeout(resolve, 6000)))
                         .then(data => {
                             document.querySelector('#result').innerHTML = `<strong>${data.result}</strong>`;
                             document.querySelector('#output').textContent = data.output || "";
                             document.querySelector('#error').textContent = data.user_friendly_error || "";
+                            document.querySelector('#response-card').classList.remove('d-none');
                         })
                         .catch(err => console.error("Error submitting code:", err));
                 });
