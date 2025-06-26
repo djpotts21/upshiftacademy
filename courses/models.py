@@ -21,6 +21,7 @@ class Module(models.Model):
         User, on_delete=models.CASCADE, editable=False
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    challenges = models.ManyToManyField('challenges.CodeChallenge', related_name='modules', blank=True)
 
     def __str__(self):
         return self.title
@@ -52,13 +53,29 @@ class Unit(models.Model):
         return self.title
 
 
+class ProgrammeUnit(models.Model):
+    """Intermediate model to associate programmes with units."""
+    programme = models.ForeignKey('Programme', on_delete=models.CASCADE)
+    unit = models.ForeignKey('Unit', on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('programme', 'unit')
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.programme.title} > {self.unit.title} (Order: {self.order})"
+
+
 class Programme(models.Model):
     """Model representing a programme containing multiple units."""
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    units = models.ManyToManyField(Unit, related_name='programmes')
+    units = models.ManyToManyField(
+        'Unit', through='ProgrammeUnit', related_name='programmes')
     tutors = models.ManyToManyField(User, related_name='programmes')
-    students = models.ManyToManyField(User, related_name='programmes_as_student', blank=True)
+    students = models.ManyToManyField(
+        User, related_name='programmes_as_student', blank=True)
     created_by = models.ForeignKey(
         User, on_delete=models.CASCADE, editable=False
     )

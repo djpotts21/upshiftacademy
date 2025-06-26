@@ -8,7 +8,8 @@ from .models import (
     Unit,
     Lesson,
     Module,
-    Submission
+    Submission,
+    ProgrammeUnit
 )
 
 # pylint: disable=unused-argument, no-self-use, too-few-public-methods
@@ -66,18 +67,29 @@ class UnitAdmin(ReadOnlyCreatedByMixin, TutorRestrictedAdmin):
     list_display = ('title', 'created_by')
     filter_horizontal = ('lessons',)
     exclude = ('created_by',)
+    search_fields = ('title',)
+
+
+class ProgrammeUnitInline(admin.TabularInline):
+    """Inline admin for ProgrammeUnit model."""
+    model = ProgrammeUnit
+    extra = 1
+    autocomplete_fields = ['unit']
+    ordering = ['order']
+    fields = ['unit', 'order']
 
 
 @admin.register(Programme)
 class ProgrammeAdmin(ReadOnlyCreatedByMixin, TutorRestrictedAdmin):
     """Admin interface for the Programme model."""
     list_display = ('title', 'created_by', 'created_at')
-    filter_horizontal = ('units', 'tutors',)
+    inlines = [ProgrammeUnitInline]
     exclude = ('created_by',)
 
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
+    """Admin interface for the Submission model."""
     list_display = ('student', 'unit', 'submitted_at', 'graded')
     list_filter = ('graded', 'unit', 'programme')
     search_fields = ('student__username', 'unit__title')
