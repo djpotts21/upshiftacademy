@@ -9,7 +9,8 @@ from .models import (
     Lesson,
     Module,
     Submission,
-    ProgrammeUnit
+    ProgrammeUnit,
+    PrerequisiteProgrammes,
 )
 
 # pylint: disable=unused-argument, no-self-use, too-few-public-methods
@@ -77,6 +78,12 @@ class ProgrammeUnitInline(admin.TabularInline):
     autocomplete_fields = ['unit']
     ordering = ['order']
     fields = ['unit', 'order']
+
+
+@admin.register(PrerequisiteProgrammes)
+class PrerequisiteProgrammesAdmin(admin.ModelAdmin):
+    """Admin for PrerequisiteProgrammes model."""
+    list_display = ('title',)
 
 
 @admin.register(Programme)

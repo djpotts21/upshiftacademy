@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ module.title }}</h2>
+    <p><strong>Created by:</strong> {{ module.created_by }}</p>
+    <a href="{% url 'lesson_detail' lesson.id %}" class="btn btn-secondary btn-sm mt-3">← Back to Lesson</a>
+    <hr>
+    <div class="content">
+        <p>{{ module.content|linebreaks }}</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Sorry you're not registered on the programme{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="container mt-3">
+    <h1>Sorry</h1>
+    <p>You are not registered on this programme.</p>
+    <p>To access the content, please enroll in the programme.</p>
+    <a href="{% url 'programme_list' %}" class="btn btn-primary">View Programmes</a>
+
+</div>
+{% endblock %}
+
+<!-- Page Spefici Scripts -->
+{% block scripts %}
+
+{% endblock %}
+
+<!-- Page Specific Styles -->
+{% block styles %}
+{% endblock %}

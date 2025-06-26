@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>{{ unit.title }}</h2>
+            <p><strong>Created by:</strong> {{ unit.created_by }}</p>
+            <a href="{% url 'programme_detail' unit.id %}" class="btn btn-secondary btn-sm mt-1 mb-3">← Back to Programme</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <h4>Description:</h4>
+            <p>{{ unit.description }}</p>
+        </div>
+        <div class="col-12 col-md-4">
+            <h4>Lessons in this Unit:</h4>
+            <ul>
+                {% for lesson in unit.lessons.all %}
+                <li><a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a></li>
+                {% empty %}
+                <li>No lessons found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

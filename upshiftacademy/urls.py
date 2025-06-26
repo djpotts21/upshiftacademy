@@ -16,4 +16,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('profile/', include('userprofile.urls')),
     path("challenges/", include("challenges.urls")),
+    path('courses/', include('courses.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

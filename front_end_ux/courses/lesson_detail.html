@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>{{ lesson.title }}</h2>
+            <p><strong>Created by:</strong> {{ lesson.created_by }}</p>
+            <a href="{% url 'unit_detail' unit.id %}" class="btn btn-secondary btn-sm mt-1 mb-3">← Back to Unit</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <h4>Description:</h4>
+            <p>{{ lesson.description }}</p>
+        </div>
+        <div class="col-12 col-md-4">
+            <h4>Modules in this Lesson:</h4>
+            <ul>
+                {% for module in lesson.modules.all %}
+                <li><a href="{% url 'module_detail' module.id %}">{{ module.title }}</a></li>
+                {% empty %}
+                <li>No modules found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

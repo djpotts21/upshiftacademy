@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Page Title -->
+{% block title %}Programme List{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="container mt-3">
+    <h1>Programme List</h1>
+    <p>Explore our available programmes below:</p>
+
+    <div class="row">
+        {% for programme in programmes %}
+        <a href="{% url 'programme_detail' programme.id %}" class="text-decoration-none text-dark">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ programme.hero_image.url }}" class="card-img-top" alt="{{ programme.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ programme.title }}</h5>
+                        <p class="card-text">{{ programme.description|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Cost: £{{ programme.price }}</small>
+                        <a href="{% url 'programme_detail' programme.id %}" class="btn btn-dark mt-1 w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="col-12">
+            <p>No programmes available at the moment.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endblock %}
+
+    <!-- Page Spefici Scripts -->
+    {% block scripts %}
+
+    {% endblock %}
+
+    <!-- Page Specific Styles -->
+    {% block styles %}
+    {% endblock %}
