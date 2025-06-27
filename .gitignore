@@ -135,8 +135,4 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
-upshiftacademy/settings.py
 
-# Local settings
-local_settings.py
-staticfiles/
