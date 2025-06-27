@@ -1,6 +1,0 @@
-{
-  "name": "upshiftacademy",
-  "scripts": {
-    "heroku-postbuild": "python upload_static_to_s3.py"
-  }
-}
