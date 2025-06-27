@@ -88,8 +88,7 @@ coverage.xml
 # Jupyter Notebook 
 .ipynb_checkpoints 
 
-# pyenv 
-.python-version 
+
 
 # celery 
 celerybeat-schedule.* 
